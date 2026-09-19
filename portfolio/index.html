@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RAJAT SARASWAT — Creative Technologist, Visual Director & Systems Engineer</title>
+  <meta name="description" content="Official portfolio of Rajat Saraswat. Lead Creative Technologist, Visual Systems Engineer, and Interactive Director specializing in Virtual Production, Real-Time 3D, WebGL, and High-Concept Visual Systems." />
+  <meta name="keywords" content="rajat saraswat, creative technologist, visual systems engineer, virtual production, unreal engine 5, webgl, three.js, interactive director, 3d graphics, creative developer" />
+  <meta name="author" content="Rajat Saraswat" />
+  
+  <!-- Open Graph / Social Meta -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="RAJAT SARASWAT — Creative Technologist & Systems Portfolio" />
+  <meta property="og:description" content="Engineering immersive digital worlds, virtual production pipelines, and real-time interactive 3D computing." />
+  <meta property="og:image" content="assets/images/hero.jpg" />
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Cinematic System Initialization Loader -->
+  <div class="cinematic-loader" id="cinematicLoader" role="status" aria-label="Initializing Visual System">
+    <div class="loader-crt-scanlines" aria-hidden="true"></div>
+    <div class="loader-grain" aria-hidden="true"></div>
+    <div class="loader-focus-ring" aria-hidden="true"></div>
+    <div class="loader-center-box">
+      <div class="loader-iris" aria-hidden="true">
+        <div class="loader-blade b1"></div>
+        <div class="loader-blade b2"></div>
+        <div class="loader-blade b3"></div>
+        <div class="loader-blade b4"></div>
+        <div class="loader-blade b5"></div>
+        <div class="loader-blade b6"></div>
+      </div>
+      <div class="loader-telemetry-badge">OPTICAL SYSTEM BOOT // 65MM ANAMORPHIC</div>
+      <h2 class="loader-status-text" id="loaderStatusText">INITIALIZING VISUAL SYSTEM...</h2>
+      <div class="loader-progress-track">
+        <div class="loader-progress-fill" id="loaderProgressFill"></div>
+      </div>
+      <div class="loader-footer-meta">
+        <span class="loader-code-tag">FREQ // 24.00 FPS • ACEScc</span>
+        <span class="loader-percent" id="loaderCounter">00%</span>
+      </div>
+      <button class="loader-skip-btn" id="loaderSkipBtn" title="Click or tap to skip entrance">[ CLICK TO SKIP FOCUS ]</button>
+    </div>
+  </div>
+
+  <!-- 35mm Film Grain & Atmospheric Overlays -->
+  <div class="film-grain" aria-hidden="true"></div>
+  <div class="cinema-vignette" aria-hidden="true"></div>
+  <div class="cinematic-spotlight" id="cinematicSpotlight" aria-hidden="true"></div>
+
+  <!-- Cinema Mode (2.39:1 Anamorphic Widescreen Bars) -->
+  <div class="cinema-bar cinema-bar-top" aria-hidden="true"></div>
+  <div class="cinema-bar cinema-bar-bottom" aria-hidden="true"></div>
+
+  <!-- Custom Aperture Cursor -->
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+  <div class="cursor-label" id="cursorLabel" aria-hidden="true">VIEW FRAME →</div>
+
+  <!-- Header / Director Slate HUD -->
+  <header class="site-header" id="siteHeader">
+    <a href="#" class="header-brand" id="brandLogo">
+      <div class="brand-logo-mark">RS</div>
+      <div class="brand-title-wrap">
+        <span class="brand-name">Rajat Saraswat</span>
+        <span class="brand-sub">Creative Technologist // Visual Engineering</span>
+      </div>
+    </a>
+
+    <!-- Telemetry Telemetry (Camera & Editing Monitor feel) -->
+    <div class="hud-telemetry" aria-label="System Telemetry">
+      <div class="hud-item rec-indicator" id="hudRecIndicator" role="button" tabindex="0" title="Click to inspect recording state">
+        <span class="rec-dot"></span>
+        <span class="rec-label" id="recStatusLabel">REC [24 FPS]</span>
+      </div>
+      <div class="hud-item" id="hudCoordinatesWrap" title="Telemetry Coordinates (Periodic Sync)">
+        <i class="fas fa-satellite-dish" style="color: var(--accent-gold); font-size: 10px;"></i>
+        <span id="hudCoordinates">28°38'N 77°13'E</span>
+      </div>
+      <div class="hud-item">
+        <i class="fas fa-clock" style="color: var(--accent-cyan); font-size: 10px;"></i>
+        <span class="hud-timecode" id="liveTimecode">00:00:00:00</span>
+      </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="header-nav" aria-label="Main Navigation">
+      <ul class="nav-links">
+        <li><a href="#works" class="nav-link">Filmography</a></li>
+        <li><a href="#philosophy" class="nav-link">Manifesto</a></li>
+        <li><a href="#arsenal" class="nav-link">Arsenal</a></li>
+        <li><a href="#dispatch" class="nav-link">Dispatch</a></li>
+      </ul>
+
+      <!-- Action Controls -->
+      <div class="header-controls">
+        <!-- Cinema Letterbox Mode Toggle -->
+        <button class="btn-hud btn-cinema-mode" id="cinemaModeBtn" title="Toggle 2.39:1 Anamorphic Widescreen Mode">
+          <i class="fas fa-film"></i>
+          <span id="cinemaModeText">CINEMA MODE</span>
+        </button>
+
+        <!-- Ambient Web Audio Toggle with Quirky State -->
+        <button class="btn-hud btn-audio" id="audioToggleBtn" title="Toggle Cinematic Ambient Soundscape">
+          <div class="audio-waves" aria-hidden="true">
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+          </div>
+          <div class="audio-btn-labels">
+            <span id="audioBtnText">SOUND: OFF</span>
+            <span class="audio-quirk-sub" id="audioQuirkSub">probably shouldn't have clicked this</span>
+          </div>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main>
+    <!-- ==========================================================================
+         HERO SECTION: "The Vision"
+         ========================================================================== -->
+    <section class="hero-section" id="hero">
+      <div class="hero-background-wrap">
+        <img src="assets/images/hero.jpg" alt="Rajat Saraswat creative direction skyline" class="hero-bg-img" id="heroBgImg" />
+        <div class="hero-gradient-overlay"></div>
+        <div class="hero-anamorphic-flare" aria-hidden="true"></div>
+
+        <!-- Floating Atmospheric Film & Dust Particles -->
+        <div class="film-dust-specks" aria-hidden="true">
+          <span class="dust-particle p1"></span>
+          <span class="dust-particle p2"></span>
+          <span class="dust-particle p3"></span>
+          <span class="dust-particle p4"></span>
+          <span class="dust-particle p5"></span>
+          <span class="dust-particle p6"></span>
+          <span class="dust-particle p7"></span>
+          <span class="dust-particle p8"></span>
+          <span class="dust-particle p9"></span>
+          <span class="dust-particle p10"></span>
+          <span class="dust-particle p11"></span>
+          <span class="dust-particle p12"></span>
+        </div>
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-meta-badge cinematic-heading-reveal">
+          <span class="badge-sparkle">✦</span>
+          <span>LEAD CREATIVE TECHNOLOGIST &amp; VISUAL DIRECTOR</span>
+          <span class="badge-sparkle">✦</span>
+        </div>
+
+        <h1 class="hero-title cinematic-heading-reveal" id="heroMainHeading">
+          SCULPTING WORLDS
+          <span class="title-gradient light-sweep-word">IN LIGHT &amp; CODE</span>
+        </h1>
+
+        <p class="hero-subtitle">VIRTUAL PRODUCTION • INTERACTIVE 3D • REAL-TIME GRAPHICS &amp; WEBGL</p>
+
+        <p class="hero-description">
+          I engineer next-generation digital experiences at the bleeding edge of real-time 3D, computational graphics, and cinematic storytelling. Bridging robust software architecture with boundary-pushing visual aesthetics.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn-cinema-primary" id="watchShowreelBtn">
+            <span class="btn-play-icon"><i class="fas fa-play"></i></span>
+            <span>Watch Showreel 2026</span>
+          </button>
+          <a href="#works" class="btn-cinema-secondary">
+            <i class="fas fa-compass"></i>
+            <span>Explore Archives</span>
+          </a>
+        </div>
+
+        <!-- Floating Stats Ribbon -->
+        <div class="hero-stats-strip">
+          <div class="stat-item">
+            <span class="stat-number">05+</span>
+            <span class="stat-label">Years Engineering &amp; 3D</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">8K</span>
+            <span class="stat-label">Real-Time ICVFX Pipelines</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">140K+</span>
+            <span class="stat-label">Global Interactive Reach</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">08+</span>
+            <span class="stat-label">Design &amp; Tech Recognitions</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filmstrip Transition Line -->
+    <div class="filmstrip-divider" aria-hidden="true">
+      <div class="sprockets-row">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="filmstrip-center-bar">
+        <span class="filmstrip-edge-mark">35MM ANAMORPHIC // SCENE TRANSITION</span>
+        <span class="filmstrip-timecode-mark">SEQ 01 // 24.00 FPS</span>
+      </div>
+      <div class="sprockets-row">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         ACCOLADES MARQUEE
+         ========================================================================== -->
+    <section class="accolades-section" aria-label="Accolades and Festival Honors">
+      <div class="marquee-track">
+        <div class="marquee-items">
+          <div class="accolade-laurel-item">
+            <span class="laurel-icon">🏆</span>
+            <div class="accolade-text-group">
+              <span class="accolade-name">Awwwards &amp; FWA</span>
+              <span class="accolade-role">Digital Craft &amp; Innovation</span>
+            </div>
+          </div>
+          <div class="accolade-laurel-item">
+            <span class="laurel-icon">🎬</span>
+            <div class="accolade-text-group">
+              <span class="accolade-name">Cannes Next Visuals</span>
+              <span class="accolade-role">Virtual Production Showcase</span>
+            </div>
+          </div>
+          <div class="accolade-laurel-item">
+            <span class="laurel-icon">⚡</span>
+            <div class="accolade-text-group">
+              <span class="accolade-name">Epic MegaGrants Honors</span>
+              <span class="accolade-role">Real-Time 3D &amp; ICVFX</span>
+            </div>
+          </div>
+          <div class="accolade-laurel-item">
+            <span class="laurel-icon">✦</span>
+            <div class="accolade-text-group">
+              <span class="accolade-name">GitHub Open Source</span>
+              <span class="accolade-role">Creative Coding &amp; WebGL</span>
+            </div>
+          </div>
+          <div class="accolade-laurel-item">
+            <span class="laurel-icon">🌐</span>
+            <div class="accolade-text-group">
+              <span class="accolade-name">SIGGRAPH Interactive</span>
+              <span class="accolade-role">Real-Time Shader Research</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Duplicated items for seamless looping -->
+        <div class="marquee-items" aria-hidden="true">
+          <div class="accolade-laurel-item">
+            <span class="laurel-icon">🏆</span>
+            <div class="accolade-text-group">
+              <span class="accolade-name">Awwwards &amp; FWA</span>
+              <span class="accolade-role">Digital Craft &amp; Innovation</span>
+            </div>
+          </div>
+          <div class="accolade-laurel-item">
+            <span class="laurel-icon">🎬</span>
+            <div class="accolade-text-group">
+              <span class="accolade-name">Cannes Next Visuals</span>
+              <span class="accolade-role">Virtual Production Showcase</span>
+            </div>
+          </div>
+          <div class="accolade-laurel-item">
+            <span class="laurel-icon">⚡</span>
+            <div class="accolade-text-group">
+              <span class="accolade-name">Epic MegaGrants Honors</span>
+              <span class="accolade-role">Real-Time 3D &amp; ICVFX</span>
+            </div>
+          </div>
+          <div class="accolade-laurel-item">
+            <span class="laurel-icon">✦</span>
+            <div class="accolade-text-group">
+              <span class="accolade-name">GitHub Open Source</span>
+              <span class="accolade-role">Creative Coding &amp; WebGL</span>
+            </div>
+          </div>
+          <div class="accolade-laurel-item">
+            <span class="laurel-icon">🌐</span>
+            <div class="accolade-text-group">
+              <span class="accolade-name">SIGGRAPH Interactive</span>
+              <span class="accolade-role">Real-Time Shader Research</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filmstrip Transition Line -->
+    <div class="filmstrip-divider" aria-hidden="true">
+      <div class="sprockets-row">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="filmstrip-center-bar">
+        <span class="filmstrip-edge-mark">KODAK VISION3 5219 // ARCHIVE REEL</span>
+        <span class="filmstrip-timecode-mark">SEQ 02 // 2.39:1 CUT</span>
+      </div>
+      <div class="sprockets-row">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         FEATURED WORKS & FILMOGRAPHY
+         ========================================================================== -->
+    <section class="section-container reveal-section" id="works">
+      <div class="section-header-wrap cinematic-heading-reveal">
+        <span class="section-pretitle">Selected Archives</span>
+        <h2 class="section-title">Masterworks &amp; Systems</h2>
+        <p class="section-desc">A curated compilation of real-time virtual production worlds, interactive WebGL systems, and cinematic narrative studies.</p>
+      </div>
+
+      <!-- Filters -->
+      <div class="project-filters">
+        <button class="filter-btn active" data-filter="all">All Works (04)</button>
+        <button class="filter-btn" data-filter="virtual-production">Virtual Production</button>
+        <button class="filter-btn" data-filter="feature-film">Narrative Film</button>
+        <button class="filter-btn" data-filter="commercials">IMAX Documentary</button>
+        <button class="filter-btn" data-filter="3d-art">3D Art & Spatial</button>
+      </div>
+
+      <!-- Projects Dynamic Grid -->
+      <div class="projects-grid" id="projectsGrid">
+        <!-- Rendered with animated cards and REC pulses by js/app.js -->
+      </div>
+    </section>
+
+    <!-- Filmstrip Transition Line -->
+    <div class="filmstrip-divider" aria-hidden="true">
+      <div class="sprockets-row">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="filmstrip-center-bar">
+        <span class="filmstrip-edge-mark">OPTICAL PHILOSOPHY // MANIFESTO</span>
+        <span class="filmstrip-timecode-mark">SEQ 03 // 50MM T1.3</span>
+      </div>
+      <div class="sprockets-row">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         DIRECTOR'S MANIFESTO / PHILOSOPHY
+         ========================================================================== -->
+    <section class="section-container philosophy-section reveal-section" id="philosophy">
+      <div class="manifesto-grid">
+        <div class="manifesto-quote-wrap">
+          <span class="section-pretitle cinematic-heading-reveal">The Manifesto</span>
+          <blockquote class="manifesto-big-quote cinematic-heading-reveal" id="manifestoQuote">
+            <span class="manifesto-line">“Technology is not merely <span class="glow-word glow-gold">CODE</span> and pixels;</span>
+            <span class="manifesto-line">it is the <span class="glow-word glow-cyan">emotional architecture</span> of human memory.</span>
+            <span class="manifesto-line">In a digital century, we sculpt <span class="glow-word glow-gold">LIGHT</span> to reveal truth.”</span>
+          </blockquote>
+          <p class="manifesto-paragraph cinematic-heading-reveal" id="manifestoPara">
+            Every interaction and frame is engineered with precision. By uniting cutting-edge <span class="glow-word glow-cyan">REAL-TIME</span> computation—sub-millisecond shader execution, volumetric lighting, and procedural simulations—with deeply evocative cinematic storytelling, we forge a new <span class="glow-word glow-gold">WORLD</span> where interfaces dissolve and pure emotion remains.
+          </p>
+
+          <div class="director-signature-wrap cinematic-heading-reveal">
+            <div class="avatar-optic-ring">
+              <img src="assets/images/hero.jpg" alt="Rajat Saraswat avatar" class="director-avatar" />
+              <span class="avatar-status-pip" title="Director Online"></span>
+            </div>
+            <div>
+              <div class="sig-text">Rajat Saraswat</div>
+              <div class="sig-role">LEAD CREATIVE TECHNOLOGIST &amp; SYSTEMS ARCHITECT</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Lens Aperture Diagram -->
+        <div class="aperture-visualizer" id="apertureVisualizer">
+          <div class="lens-diagram" aria-hidden="true">
+            <div class="lens-outer-circle"></div>
+            <div class="lens-inner-circle">
+              <div class="lens-glass"></div>
+            </div>
+          </div>
+          <div class="lens-meta">SYSTEM SPEC: REAL-TIME COMPUTE • 60+ FPS • ZERO LATENCY</div>
+          <p class="lens-quote">
+            "When logic meets visual elegance, the interface dissolves and pure sensation remains."
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filmstrip Transition Line -->
+    <div class="filmstrip-divider" aria-hidden="true">
+      <div class="sprockets-row">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="filmstrip-center-bar">
+        <span class="filmstrip-edge-mark">DIAGNOSTIC ARSENAL // SYSTEM MODULES</span>
+        <span class="filmstrip-timecode-mark">SEQ 04 // HARDWARE TELEMETRY</span>
+      </div>
+      <div class="sprockets-row">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         CREATIVE DISCIPLINES / ARSENAL (FUTURISTIC SYSTEM MODULES)
+         ========================================================================== -->
+    <section class="section-container reveal-section" id="arsenal">
+      <div class="section-header-wrap cinematic-heading-reveal">
+        <span class="section-pretitle">Telemetry &amp; Hardware</span>
+        <h2 class="section-title">System Modules &amp; Arsenal</h2>
+        <p class="section-desc">Mission-critical technical disciplines and creative software pipelines engineered for real-time fidelity.</p>
+      </div>
+
+      <div class="disciplines-grid">
+        <!-- Module 01: Systems Architecture & C++ -->
+        <div class="discipline-card module-card" data-module="cpp">
+          <div class="module-header-row">
+            <span class="module-id">MOD // 01</span>
+            <span class="module-status-badge status-online">
+              <span class="status-dot"></span> C++ // ONLINE
+            </span>
+          </div>
+          <i class="fas fa-terminal disc-icon"></i>
+          <h3 class="disc-title">Low-Level Systems Architecture</h3>
+          <p class="disc-desc">Real-time memory management, zero-overhead abstractions, SIMD vectorization, and multi-threaded compute pipelines.</p>
+          <div class="module-telemetry-strip">
+            <span class="telemetry-item" title="Classified status"><i class="fas fa-microchip"></i> SEGFAULTS: CLASSIFIED</span>
+            <span class="telemetry-item"><i class="fas fa-tachometer-alt"></i> LATENCY: 0.4MS</span>
+          </div>
+          <div class="disc-tools">
+            <span class="disc-tool-tag">C++20</span>
+            <span class="disc-tool-tag">Clang / LLVM</span>
+            <span class="disc-tool-tag">Multithreading</span>
+          </div>
+          <div class="module-scanner-beam" aria-hidden="true"></div>
+        </div>
+
+        <!-- Module 02: WebGL & Interactive 3D -->
+        <div class="discipline-card module-card" data-module="webgl">
+          <div class="module-header-row">
+            <span class="module-id">MOD // 02</span>
+            <span class="module-status-badge status-online">
+              <span class="status-dot"></span> WEBGL // ONLINE
+            </span>
+          </div>
+          <i class="fas fa-cube disc-icon"></i>
+          <h3 class="disc-title">Interactive 3D &amp; Spatial Web</h3>
+          <p class="disc-desc">Crafting award-winning interactive browser experiences, custom GLSL raymarching shaders, and WebGPU graphics rendering.</p>
+          <div class="module-telemetry-strip">
+            <span class="telemetry-item"><i class="fas fa-bolt"></i> SHADERS: COMPILED</span>
+            <span class="telemetry-item"><i class="fas fa-film"></i> 60+ FPS LOCK</span>
+          </div>
+          <div class="disc-tools">
+            <span class="disc-tool-tag">Three.js</span>
+            <span class="disc-tool-tag">GLSL Shaders</span>
+            <span class="disc-tool-tag">WebGPU</span>
+          </div>
+          <div class="module-scanner-beam" aria-hidden="true"></div>
+        </div>
+
+        <!-- Module 03: Virtual Production & ICVFX -->
+        <div class="discipline-card module-card" data-module="vp">
+          <div class="module-header-row">
+            <span class="module-id">MOD // 03</span>
+            <span class="module-status-badge status-online">
+              <span class="status-dot"></span> UE 5.4 // ONLINE
+            </span>
+          </div>
+          <i class="fas fa-video disc-icon"></i>
+          <h3 class="disc-title">Virtual Production &amp; ICVFX</h3>
+          <p class="disc-desc">Pioneering in-camera visual effects on massive LED volumes with camera-tracked parallax and zero-latency real-time environments.</p>
+          <div class="module-telemetry-strip">
+            <span class="telemetry-item"><i class="fas fa-sync"></i> LED VOLUME SYNC</span>
+            <span class="telemetry-item"><i class="fas fa-camera"></i> ARRI ALEXA 65</span>
+          </div>
+          <div class="disc-tools">
+            <span class="disc-tool-tag">Unreal Engine 5.4</span>
+            <span class="disc-tool-tag">Disguise Media</span>
+            <span class="disc-tool-tag">OptiTrack</span>
+          </div>
+          <div class="module-scanner-beam" aria-hidden="true"></div>
+        </div>
+
+        <!-- Module 04: AI Systems -->
+        <div class="discipline-card module-card" data-module="ai">
+          <div class="module-header-row">
+            <span class="module-id">MOD // 04</span>
+            <span class="module-status-badge status-learning">
+              <span class="status-dot dot-amber"></span> AI SYSTEMS // LEARNING
+            </span>
+          </div>
+          <i class="fas fa-brain disc-icon"></i>
+          <h3 class="disc-title">Generative AI &amp; Neural Media</h3>
+          <p class="disc-desc">Exploring neural radiance fields (NeRFs), Gaussian splatting, custom diffusion synthesis, and procedural generative asset models.</p>
+          <div class="module-telemetry-strip">
+            <span class="telemetry-item" title="Work in progress"><i class="fas fa-robot"></i> CURRENT STATUS: FIGURING IT OUT</span>
+            <span class="telemetry-item"><i class="fas fa-network-wired"></i> PYTHON // ONLINE</span>
+          </div>
+          <div class="disc-tools">
+            <span class="disc-tool-tag">PyTorch</span>
+            <span class="disc-tool-tag">Gaussian Splat</span>
+            <span class="disc-tool-tag">Diffusion</span>
+          </div>
+          <div class="module-scanner-beam" aria-hidden="true"></div>
+        </div>
+
+        <!-- Module 05: Computational Physics & Math -->
+        <div class="discipline-card module-card" data-module="math">
+          <div class="module-header-row">
+            <span class="module-id">MOD // 05</span>
+            <span class="module-status-badge status-online">
+              <span class="status-dot"></span> ALGORITHMS // ACTIVE
+            </span>
+          </div>
+          <i class="fas fa-square-root-variable disc-icon"></i>
+          <h3 class="disc-title">Computational Physics &amp; VFX</h3>
+          <p class="disc-desc">Procedural simulations of fluid quantum matter, volumetric dust, particle vector fields, and linear algebra coordinate transforms.</p>
+          <div class="module-telemetry-strip">
+            <span class="telemetry-item" title="Classified humor"><i class="fas fa-infinity"></i> MATH // STATUS: WE DON'T TALK ABOUT IT</span>
+            <span class="telemetry-item"><i class="fas fa-wave-square"></i> HOUDINI SOLVER</span>
+          </div>
+          <div class="disc-tools">
+            <span class="disc-tool-tag">Houdini Solaris</span>
+            <span class="disc-tool-tag">TouchDesigner</span>
+            <span class="disc-tool-tag">GLSL Sim</span>
+          </div>
+          <div class="module-scanner-beam" aria-hidden="true"></div>
+        </div>
+
+        <!-- Module 06: Color Science & ACES -->
+        <div class="discipline-card module-card" data-module="color">
+          <div class="module-header-row">
+            <span class="module-id">MOD // 06</span>
+            <span class="module-status-badge status-online">
+              <span class="status-dot"></span> ACEScc // CALIBRATED
+            </span>
+          </div>
+          <i class="fas fa-palette disc-icon"></i>
+          <h3 class="disc-title">Color Science &amp; ACES Grading</h3>
+          <p class="disc-desc">Mastering film print emulation LUTs, ACEScc color-managed workflows, and high-dynamic-range HDR10/Dolby Vision deliveries.</p>
+          <div class="module-telemetry-strip">
+            <span class="telemetry-item"><i class="fas fa-eye"></i> KODAK 2383 PRINT</span>
+            <span class="telemetry-item"><i class="fas fa-sun"></i> DELTA E: &lt; 0.4</span>
+          </div>
+          <div class="disc-tools">
+            <span class="disc-tool-tag">DaVinci Resolve Studio</span>
+            <span class="disc-tool-tag">Baselight</span>
+            <span class="disc-tool-tag">ACEScc</span>
+          </div>
+          <div class="module-scanner-beam" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         CALL SHEET / CONTACT TRANSMISSION
+         ========================================================================== -->
+    <section class="section-container" id="dispatch">
+      <div class="section-header-wrap">
+        <span class="section-pretitle">Initialize Transmission</span>
+        <h2 class="section-title">Call Sheet & Inquiries</h2>
+        <p class="section-desc">Initiate dialogue for feature direction, virtual production commissions, or keynote collaborations.</p>
+      </div>
+
+      <div class="contact-slate-wrap">
+        <!-- Clapperboard Slate Contact Box -->
+        <div class="slate-box">
+          <div class="clapper-stripes" aria-hidden="true"></div>
+          <div class="slate-body">
+            <div class="slate-fields-grid">
+              <div class="slate-meta-field">
+                <span class="meta-field-label">PRODUCTION</span>
+                <span class="meta-field-val">SARASWAT LABS</span>
+              </div>
+              <div class="slate-meta-field">
+                <span class="meta-field-label">SCENE</span>
+                <span class="meta-field-val" id="slateSceneNum">09</span>
+              </div>
+              <div class="slate-meta-field">
+                <span class="meta-field-label">TAKE</span>
+                <span class="meta-field-val" id="slateTakeNum">01</span>
+              </div>
+            </div>
+
+            <form id="slateContactForm">
+              <div class="form-group">
+                <label for="producerName" class="form-label">Collaborator Name / Studio</label>
+                <input type="text" id="producerName" class="form-input" placeholder="e.g. Elena Rostova — Creative Studio" required />
+              </div>
+
+              <div class="form-group">
+                <label for="producerEmail" class="form-label">Transmission Frequency (Email)</label>
+                <input type="email" id="producerEmail" class="form-input" placeholder="e.g. elena@production.studio" required />
+              </div>
+
+              <div class="form-group">
+                <label for="projectBrief" class="form-label">Project Logline / Brief</label>
+                <textarea id="projectBrief" class="form-textarea" placeholder="Outline the vision, timeline, scale, or commission parameters..." required></textarea>
+              </div>
+
+              <div class="form-submit-row">
+                <button type="submit" class="btn-slate-clap" id="dispatchSubmitBtn">
+                  <i class="fas fa-satellite-dish btn-icon" id="dispatchBtnIcon"></i>
+                  <span class="btn-text" id="dispatchBtnText">SEND TRANSMISSION →</span>
+                </button>
+              </div>
+
+              <!-- Terminal Transmission Log Readout -->
+              <div class="terminal-dispatch-log" id="terminalDispatchLog" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Transmission Status Info -->
+        <div class="contact-side-info">
+          <div class="status-callout">
+            <div class="status-tag">
+              <span class="status-dot-pulse"></span>
+              <span>CREATIVE TECH AVAILABILITY</span>
+            </div>
+            <p class="status-desc">
+              Currently accepting select creative engineering commissions, interactive WebGL experiences, and technical lead roles for 2026.
+            </p>
+
+            <!-- Director's Mistake Subtle Easter Egg -->
+            <div class="director-mistake-wrap" title="Classified Optical Marker">
+              <button class="mistake-pixel-btn" id="directorMistakeBtn" type="button" aria-label="Classified director marker">✦</button>
+              <span class="mistake-popup" id="directorMistakePopup">You found the director's mistake.</span>
+            </div>
+          </div>
+
+          <div class="dispatch-channels">
+            <a href="mailto:rajat.saraswat.dev@gmail.com" class="channel-link">
+              <span><i class="fas fa-envelope" style="margin-right: 10px; color: var(--accent-gold);"></i> DIRECT DISPATCH WIRE</span>
+              <span style="color: var(--accent-gold);">rajat.saraswat.dev@gmail.com</span>
+            </a>
+            <a href="https://github.com/rajatsaraswat" target="_blank" rel="noopener noreferrer" class="channel-link">
+              <span><i class="fab fa-github" style="margin-right: 10px; color: var(--accent-cyan);"></i> CODE &amp; REPOSITORIES</span>
+              <span>github.com/rajatsaraswat</span>
+            </a>
+            <a href="https://linkedin.com/in/rajatsaraswat" target="_blank" rel="noopener noreferrer" class="channel-link">
+              <span><i class="fab fa-linkedin" style="margin-right: 10px; color: var(--accent-gold);"></i> PROFESSIONAL NETWORK</span>
+              <span>linkedin.com/in/rajatsaraswat</span>
+            </a>
+            <a href="https://x.com/rajatsaraswat" target="_blank" rel="noopener noreferrer" class="channel-link">
+              <span><i class="fab fa-x-twitter" style="margin-right: 10px; color: var(--accent-cyan);"></i> X (FORMERLY TWITTER)</span>
+              <span>@rajatsaraswat</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       SHOWREEL 4K SIMULATION MODAL
+       ========================================================================== -->
+  <div class="modal-backdrop" id="showreelModal" role="dialog" aria-modal="true" aria-label="Director Showreel">
+    <div class="showreel-window">
+      <!-- Top HUD -->
+      <div class="showreel-hud-overlay">
+        <div class="showreel-watermark">
+          <span class="showreel-watermark-dot"></span>
+          <span>RAJAT SARASWAT // SHOWREEL &amp; CREATIVE TECH LABS 4K UHD</span>
+        </div>
+        <button class="modal-close-btn" id="closeShowreelBtn" aria-label="Close Showreel">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Video Canvas Viewport -->
+      <div class="showreel-viewport ratio-239" id="showreelViewport">
+        <canvas id="showreelCanvas"></canvas>
+      </div>
+
+      <!-- Control Deck -->
+      <div class="showreel-deck">
+        <div class="scrub-timeline" id="scrubTimeline" title="Click to scrub timeline">
+          <div class="scrub-progress" id="scrubProgress"></div>
+        </div>
+
+        <div class="deck-controls-row">
+          <div class="deck-left-group">
+            <button class="btn-deck-play" id="deckPlayBtn" title="Play / Pause">
+              <i class="fas fa-pause"></i>
+            </button>
+            <div class="deck-timecode">
+              TIMECODE: <span>00:01:42:19</span> / <span>00:03:30:00</span>
+            </div>
+          </div>
+
+          <div class="deck-right-group">
+            <div class="aspect-selector">
+              <button class="aspect-btn" data-ratio="169">16:9</button>
+              <button class="aspect-btn active" data-ratio="239">2.39:1</button>
+              <button class="aspect-btn" data-ratio="43">4:3</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PROJECT DETAIL MODAL
+       ========================================================================== -->
+  <div class="modal-backdrop" id="projectDetailModal" role="dialog" aria-modal="true" aria-label="Project Details">
+    <div class="project-modal-window">
+      <div class="detail-banner">
+        <img src="" alt="" id="projectModalBanner" class="detail-banner-img" />
+        <div class="detail-banner-grad"></div>
+        <button class="modal-close-btn" id="closeProjectModalBtn" style="position: absolute; top: 20px; right: 20px; z-index: 10;" aria-label="Close modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="detail-body">
+        <div class="detail-header-meta">
+          <span class="detail-category" id="projectModalCategory"></span>
+        </div>
+        <h3 class="detail-title" id="projectModalTitle"></h3>
+        <p class="detail-logline" id="projectModalLogline"></p>
+
+        <!-- Camera & Lens Tech Specs Grid -->
+        <div class="detail-specs-grid" id="projectModalSpecs">
+          <!-- Dynamic specs injected here -->
+        </div>
+
+        <div class="detail-story-block">
+          <h4>Director's Statement & Production Log</h4>
+          <p id="projectModalSynopsis"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       EASTER EGG: ROLLING CREDITS MODAL
+       ========================================================================== -->
+  <div class="credits-overlay" id="creditsOverlay" role="dialog" aria-modal="true" aria-label="Rolling Credits">
+    <button class="modal-close-btn credits-close-hud" id="closeCreditsBtn" aria-label="Close Credits">
+      <i class="fas fa-times"></i>
+    </button>
+    <div class="credits-crawl">
+      <h2 class="credits-title">RAJAT SARASWAT STUDIO</h2>
+
+      <div class="credit-role-block">
+        <div class="credit-role">WRITTEN &amp; DIRECTED BY</div>
+        <div class="credit-name">Rajat Saraswat</div>
+      </div>
+
+      <div class="credit-role-block">
+        <div class="credit-role">LEAD CREATIVE TECHNOLOGIST</div>
+        <div class="credit-name">Rajat Saraswat &amp; Visual Systems Team</div>
+      </div>
+
+      <div class="credit-role-block">
+        <div class="credit-role">VIRTUAL PRODUCTION SUPERVISOR</div>
+        <div class="credit-name">Unreal Engine 5 Core Engine</div>
+      </div>
+
+      <div class="credit-role-block">
+        <div class="credit-role">INTERACTIVE 3D &amp; WEBGL ENGINE</div>
+        <div class="credit-name">Three.js • Custom GLSL Raymarching Shaders</div>
+      </div>
+
+      <div class="credit-role-block">
+        <div class="credit-role">COLOR SCIENCE &amp; FILM EMULATION</div>
+        <div class="credit-name">ACEScc • Kodak Vision3 5219 Print</div>
+      </div>
+
+      <div class="credit-role-block">
+        <div class="credit-role">SOUND ARCHITECTURE</div>
+        <div class="credit-name">Modular Analog Synthesizers &amp; Web Audio</div>
+      </div>
+
+      <div class="credit-role-block">
+        <div class="credit-role">SPECIAL THANKS</div>
+        <div class="credit-name">Open Source Community • Mentors • Creative Technologists Worldwide</div>
+      </div>
+
+      <p style="color: var(--accent-gold); font-family: var(--font-mono); font-size: 12px; margin-top: 50px;">
+        ENGINEERED WITH REAL-TIME COMPUTE &amp; CINEMASCOPE<br />
+        © MMXXVI RAJAT SARASWAT. ALL RIGHTS RESERVED.
+      </p>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-left">
+      <div>
+        <span>© 2026 RAJAT SARASWAT. ALL RIGHTS RESERVED.</span>
+        <span style="margin: 0 10px; color: var(--border-subtle);">|</span>
+        <span>CALIBRATED FOR 2.39:1 CINEMASCOPE</span>
+      </div>
+      <div class="footer-quirk-line">
+        BUILT WITH CODE, COFFEE &amp; QUESTIONABLE DECISIONS.
+      </div>
+    </div>
+
+    <div class="footer-meta">
+      <button class="footer-hud-btn" id="openDeletedFrameBtn" title="Inspect Timeline Anomaly">
+        <i class="fas fa-cut"></i> [FRAME 404: DELETED SCENE]
+      </button>
+      <button class="footer-credits-btn" id="rollCreditsBtn">
+        <i class="fas fa-scroll"></i> ROLL END CREDITS
+      </button>
+      <a href="#hero" class="nav-link" style="font-size: 11px;">BACK TO TOP ↑</a>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       EASTER EGG: 404 DELETED FRAME MODAL
+       ========================================================================== -->
+  <div class="modal-backdrop" id="deletedFrameModal" role="dialog" aria-modal="true" aria-label="Deleted Frame">
+    <div class="deleted-frame-window">
+      <div class="deleted-crt-scanlines" aria-hidden="true"></div>
+      <div class="deleted-frame-header">
+        <span class="deleted-badge">TIMELINE ANOMALY // FRAME 404</span>
+        <button class="modal-close-btn" id="closeDeletedFrameBtn" aria-label="Close Deleted Frame">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="deleted-frame-body">
+        <div class="deleted-clapper-icon" aria-hidden="true">🎬</div>
+        <h3 class="deleted-title">THIS FRAME DOESN'T EXIST.</h3>
+        <p class="deleted-desc">The director probably deleted it in the final 35mm cut.</p>
+        <div class="deleted-actions">
+          <button class="btn-cinema-primary" id="restoreTimelineBtn">
+            <i class="fas fa-undo"></i> RESTORE TIMELINE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       SYSTEM STATUS IDLE TOAST (20S INACTIVITY HUD)
+       ========================================================================== -->
+  <div class="hud-idle-toast" id="idleToast" role="alert" aria-live="polite">
+    <div class="idle-toast-indicator"></div>
+    <div class="idle-toast-content">
+      <div class="idle-title">SYSTEM STATUS:</div>
+      <div class="idle-message">USER STILL EXPLORING... <span class="idle-highlight">GOOD.</span></div>
+    </div>
+    <button class="idle-toast-close" id="closeIdleToastBtn" aria-label="Dismiss status">&times;</button>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
